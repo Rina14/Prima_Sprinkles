@@ -1,0 +1,9 @@
+{
+  "amount": 20,
+  "speed1": 1,
+  "speed2": 1.4,
+  "speed3": 1.8,
+  "amountLevelChange1": 15,
+  "amountLevelChange2": 30,
+  "amountLevelChange3": 50
+}
