@@ -25,10 +25,92 @@ var Sprinkles;
 var Sprinkles;
 (function (Sprinkles) {
     var ƒ = FudgeCore;
+    class Sprinkle extends ƒ.Node {
+        constructor(_name, _x, _y) {
+            super(_name);
+            this.move = () => {
+                let speed = this.speed * Sprinkles.currentSpeed * ƒ.Loop.timeFrameReal / 1000;
+                //translation = translation + direction.scale(currentSpeed);
+                this.mtxLocal.translate(new ƒ.Vector3(this.direction.x * speed, this.direction.y * speed, 0));
+            };
+            let direction = new ƒ.Vector2(Math.random() - 0.5, Math.random() - 0.5);
+            direction.normalize();
+            this.direction = direction;
+            this.speed = Math.random() * 0.2 + 0.1;
+            this.addComponent(new ƒ.ComponentTransform());
+            // ƒ.MeshSprite
+            let mesh = new ƒ.MeshQuad("Cube");
+            let cmpMesh = new ƒ.ComponentMesh(mesh);
+            cmpMesh.mtxPivot.scale(new ƒ.Vector3(0.05, 0.05, 0));
+            this.addComponent(cmpMesh);
+            let material = new ƒ.Material("Cubey", ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(1, 1, 1, 1)));
+            let cmpMaterial = new ƒ.ComponentMaterial(material);
+            this.addComponent(cmpMaterial);
+            ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.move);
+        }
+    }
+    Sprinkles.Sprinkle = Sprinkle;
+})(Sprinkles || (Sprinkles = {}));
+/// <reference path="Sprinkle.ts" />
+var Sprinkles;
+/// <reference path="Sprinkle.ts" />
+(function (Sprinkles) {
+    var ƒ = FudgeCore;
+    class KaroSprinkle extends ƒ.Node {
+        constructor(_name, _x, _y) {
+            super(_name);
+            this.move = () => {
+                let speed = this.speed * Sprinkles.currentSpeed * ƒ.Loop.timeFrameReal / 1000;
+                //translation = translation + direction.scale(currentSpeed);
+                this.mtxLocal.translate(new ƒ.Vector3(this.direction.x * speed, this.direction.y * speed, 0));
+            };
+            let direction = new ƒ.Vector2(Math.random() - 0.5, Math.random() - 0.5);
+            direction.normalize();
+            this.direction = direction;
+            this.speed = Math.random() * 0.2 + 0.1;
+            this.addComponent(new ƒ.ComponentTransform());
+            // ƒ.MeshSprite for Karo Try
+            let karo = new ƒ.MeshSprite("Karo");
+            let textureKaro = new ƒ.ComponentMesh(karo);
+            textureKaro.mtxPivot.scale(new ƒ.Vector3(0.05, 0.05, 0));
+            this.addComponent(textureKaro);
+            let coatTextured = KaroSprinkle.generateTextureFromId("KaroBU");
+            // let texture: ƒ.Texture = new ƒ.Texture("KaroBlueMaterial");
+            let material = new ƒ.Material("KaroBlueMaterial", ƒ.ShaderTexture, coatTextured);
+            let cmpMaterial = new ƒ.ComponentMaterial(material);
+            this.addComponent(cmpMaterial);
+            // ƒ.MeshSprite
+            // let karo: ƒ.MeshSprite = new ƒ.MeshSprite("Karo");
+            // let textureKaro: ƒ.ComponentMesh = new ƒ.ComponentMesh(karo);
+            // textureKaro.mtxPivot.scale(new ƒ.Vector3(0.05, 0.05, 0));
+            // this.addComponent(textureKaro);
+            // let texture: ƒ.Texture = new ƒ.Texture("KaroMaterial", ƒ.ShaderTexture, new ƒ.CoatTextured(textureId));
+            // let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(texture);
+            // this.addComponent(cmpMaterial);
+            ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.move);
+        }
+        static generateTextureFromId(textureId) {
+            let coatTextured = new ƒ.CoatTextured();
+            let img = document.querySelector(textureId);
+            let textureImage = new ƒ.TextureImage();
+            textureImage.image = img;
+            coatTextured.texture = textureImage;
+            return coatTextured;
+        }
+    }
+    Sprinkles.KaroSprinkle = KaroSprinkle;
+})(Sprinkles || (Sprinkles = {}));
+var Sprinkles;
+(function (Sprinkles) {
+    var ƒ = FudgeCore;
     window.addEventListener("load", init);
     Sprinkles.branch = new ƒ.Node("Graph");
     let viewport = new ƒ.Viewport();
     Sprinkles.currentSpeed = 1;
+    Sprinkles.squareSprinkle = new ƒ.Node("SquareSprinkle");
+    Sprinkles.sprinkles = new ƒ.Node("Sprinkle");
+    // export let roundSprinkle: ƒ.Node = new ƒ.Node("RoundSprinkle");
+    // let squareSprinkle: ƒ.Node[] = [];
     function init(_event) {
         const canvas = document.querySelector("canvas");
         // Cube zur Überprüfung, was außerhalb des Canvas liegt
@@ -38,7 +120,24 @@ var Sprinkles;
         // let material: ƒ.Material = new ƒ.Material("Cubey", ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(1, 1, 1, 1)));
         // let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(material);
         // branch.addComponent(cmpMaterial);
-        Sprinkles.branch.addChild(new Sprinkles.RoundSprinkle("Roundy1", 0, 0));
+        // für level 1 Geschwindigkeit beachten
+        // branch.addChild(new SquareSprinkle("Squarey", 0, 0));
+        Sprinkles.branch.addChild(new Sprinkles.SquareSprinkle("Squarey", 0, 0));
+        // generate 25 SquareSprinkles at once
+        for (let i = 0; i < 25; i++) {
+            let squaries = new Sprinkles.SquareSprinkle("SquareSprinkle", 0, 0);
+            Sprinkles.branch.addChild(squaries);
+        }
+        // generate X KaroSprinkles at once
+        for (let i = 0; i < 20; i++) {
+            let karos = new Sprinkles.KaroSprinkle("KaroSprinkle", 0, 0);
+            Sprinkles.branch.addChild(karos);
+        }
+        // generate X StarSprinkles at once
+        // for (let i: number = 0; i < 25; i++) {
+        //   let stars: StarSprinkle = new StarSprinkle("StarSprinkle", 0, 0);
+        //   branch.addChild(stars);
+        // }
         let cmpCamera = new ƒ.ComponentCamera();
         cmpCamera.mtxPivot.translateZ(1.98);
         cmpCamera.mtxPivot.rotateY(180);
@@ -67,35 +166,6 @@ var Sprinkles;
     Obstacle.material = new ƒ.Material("White", ƒ.ShaderUniColor, new ƒ.CoatColored());
     Sprinkles.Obstacle = Obstacle;
 })(Sprinkles || (Sprinkles = {}));
-var Sprinkles;
-(function (Sprinkles) {
-    var ƒ = FudgeCore;
-    class Sprinkle extends ƒ.Node {
-        constructor(_name, _x, _y) {
-            super(_name);
-            this.move = () => {
-                let speed = this.speed * Sprinkles.currentSpeed * ƒ.Loop.timeFrameReal / 1000;
-                //translation = translation + direction.scale(currentSpeed);
-                this.mtxLocal.translate(new ƒ.Vector3(this.direction.x * speed, this.direction.y * speed, 0));
-            };
-            let direction = new ƒ.Vector2(Math.random() - 0.5, Math.random() - 0.5);
-            direction.normalize();
-            this.direction = direction;
-            this.speed = Math.random() * 0.2 + 0.1;
-            this.addComponent(new ƒ.ComponentTransform());
-            // ƒ.MeshSprite
-            let mesh = new ƒ.MeshQuad("Cube");
-            let cmpMesh = new ƒ.ComponentMesh(mesh);
-            cmpMesh.mtxPivot.scale(new ƒ.Vector3(0.2, 0.2, 0));
-            this.addComponent(cmpMesh);
-            let material = new ƒ.Material("Cubey", ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(1, 1, 1, 1)));
-            let cmpMaterial = new ƒ.ComponentMaterial(material);
-            this.addComponent(cmpMaterial);
-            ƒ.Loop.addEventListener("loopFrame" /* LOOP_FRAME */, this.move);
-        }
-    }
-    Sprinkles.Sprinkle = Sprinkle;
-})(Sprinkles || (Sprinkles = {}));
 /// <reference path="Sprinkle.ts" />
 var Sprinkles;
 /// <reference path="Sprinkle.ts" />
@@ -113,8 +183,10 @@ var Sprinkles;
 (function (Sprinkles) {
     class SquareSprinkle extends Sprinkles.Sprinkle {
         collideWith(obstacle) {
+            //   let mtxSquareSprinkle: ƒ.Matrix4x4 = this.mtxLocal;
+            //   this.cmpTransform.mtxLocal = ƒ.Matrix4x4.RELATIVE(mtxSquareSprinkle, obstacle.mtxLocal);
+            //   this.setRectPosition();
         }
-        ;
     }
     Sprinkles.SquareSprinkle = SquareSprinkle;
 })(Sprinkles || (Sprinkles = {}));
