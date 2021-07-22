@@ -17,16 +17,25 @@ namespace Sprinkles {
       this.addComponent(new ƒ.ComponentTransform());
 
       // ƒ.MeshSprite
-      let mesh: ƒ.MeshQuad = new ƒ.MeshQuad("Cube");
-      let cmpMesh: ƒ.ComponentMesh = new ƒ.ComponentMesh(mesh);
-      cmpMesh.mtxPivot.scale(new ƒ.Vector3(0.05, 0.05, 0));
-      this.addComponent(cmpMesh);
+      // let mesh: ƒ.MeshQuad = new ƒ.MeshQuad("Cube");
+      // let cmpMesh: ƒ.ComponentMesh = new ƒ.ComponentMesh(mesh);
+      // cmpMesh.mtxPivot.scale(new ƒ.Vector3(0.05, 0.05, 0));
+      // this.addComponent(cmpMesh);
 
-      let material: ƒ.Material = new ƒ.Material("Cubey", ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(1, 1, 1, 1)));
-      let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(material);
-      this.addComponent(cmpMaterial);
+      // let material: ƒ.Material = new ƒ.Material("Cubey", ƒ.ShaderUniColor, new ƒ.CoatColored(new ƒ.Color(1, 1, 1, 1)));
+      // let cmpMaterial: ƒ.ComponentMaterial = new ƒ.ComponentMaterial(material);
+      // this.addComponent(cmpMaterial);
 
       ƒ.Loop.addEventListener(ƒ.EVENT.LOOP_FRAME, this.move);
+    }
+
+    static generateTextureFromId(textureId: string): ƒ.CoatTextured {
+      let coatTextured: ƒ.CoatTextured = new ƒ.CoatTextured();
+      let img: HTMLImageElement = document.querySelector(textureId);
+      let textureImage: ƒ.TextureImage = new ƒ.TextureImage();
+      textureImage.image = img;
+      coatTextured.texture = textureImage;
+      return coatTextured;
     }
 
     public move = (): void => {

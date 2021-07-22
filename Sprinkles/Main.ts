@@ -4,7 +4,7 @@ namespace Sprinkles {
   export let branch: ƒ.Node = new ƒ.Node("Graph");
   let viewport: ƒ.Viewport = new ƒ.Viewport();
   export let currentSpeed: number = 1;
-  export let squareSprinkle: ƒ.Node = new ƒ.Node("SquareSprinkle");
+  export let squareSprinkle: ƒ.Node = new ƒ.Node("MeshSprinkle");
   export let sprinkles: ƒ.Node = new ƒ.Node("Sprinkle");
   // export let roundSprinkle: ƒ.Node = new ƒ.Node("RoundSprinkle");
   // let squareSprinkle: ƒ.Node[] = [];
@@ -27,18 +27,18 @@ namespace Sprinkles {
 
     // für level 1 Geschwindigkeit beachten
     // branch.addChild(new SquareSprinkle("Squarey", 0, 0));
-    branch.addChild(new SquareSprinkle("Squarey", 0, 0));
+    branch.addChild(new MeshSprinkle("Squarey", 0, 0));
 
 
-    // generate 25 SquareSprinkles at once
+    // generate 25 MeshSprinkles at once
     for (let i: number = 0; i < 25; i++) {
-      let squaries: SquareSprinkle = new SquareSprinkle("SquareSprinkle", 0, 0);
+      let squaries: MeshSprinkle = new MeshSprinkle("MeshSprinkle", 0, 0);
       branch.addChild(squaries);
     }
 
     // generate X KaroSprinkles at once
     for (let i: number = 0; i < 20; i++) {
-      let karos: KaroSprinkle = new KaroSprinkle("KaroSprinkle", 0, 0);
+      let karos: SpriteSprinkle = new SpriteSprinkle("SpriteSprinkle", 0, 0);
       branch.addChild(karos);
     }
 
