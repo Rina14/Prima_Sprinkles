@@ -1,3 +1,0 @@
-1. Spielfluss anfangen (Sprinkles spawnen, der Luftballon, Timer ...)
-2. Collision implementieren
-3. Sprites einfügen

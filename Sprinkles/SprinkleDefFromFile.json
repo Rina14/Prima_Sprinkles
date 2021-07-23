@@ -1,9 +1,29 @@
 {
-  "amount": 20,
-  "speed1": 1,
-  "speed2": 1.4,
-  "speed3": 1.8,
-  "amountLevelChange1": 15,
-  "amountLevelChange2": 30,
-  "amountLevelChange3": 50
+  "level": [
+    {
+      "speed": 1,
+      "amount": 15,
+      "typesToCollect": [
+        "orange",
+        "red"
+      ],
+      "task": "Collect at least 15 light red and orange objects!"
+    },
+    {
+      "speed": 1.2,
+      "amount": 30,
+      "typesToCollect": [
+        "green"
+      ],
+      "task": "Now you have to collect 30 green objects!"
+    },
+    {
+      "speed": 1.4,
+      "amount": 50,
+      "typesToCollect": [
+        "blue"
+      ],
+      "task": "Finally collect 50 blue objects!"
+    }
+  ]
 }
